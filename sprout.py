@@ -15,9 +15,6 @@ TOKEN = os.getenv('TOKEN')
 client_id = os.getenv('BOT_CLIENT_ID')
 if client_id is not None:
     BOT_CLIENT_ID = int(client_id)
-MOCK = bool(os.getenv('MOCK'))
-if MOCK:
-    print("Mock mode is on")
 
 
 class Sprout(discord.Client):
@@ -49,14 +46,10 @@ class Sprout(discord.Client):
             return
         print(f'Message from {message.author}: {message.content}')
 
-        if not MOCK:
-            channel = self.get_channel(message.channel.id)
-            if channel is not None:
-                message = await channel.send('render()')
-            await message.add_reaction(emoji="🌱")
-        else:
-            # print(render())
-            pass
+        channel = self.get_channel(message.channel.id)
+        if channel is not None:
+            message = await channel.send(self.game.render())
+        await message.add_reaction(emoji="🌱")
 
     async def on_raw_reaction_add(self, payload):
         print(payload.emoji)
