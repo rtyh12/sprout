@@ -37,7 +37,7 @@ class Game:
 
     def get_components(self, hash: str, type_: Type[Component]) -> list[Component]:
         return [c for c in
-                [component for component in self.game_objects.values()]
+                [component for component in self.game_objects[hash]]
                 if isinstance(c, type_)]
 
     def transform_and_components_of_type(self, type_: Type[Component])\
