@@ -32,9 +32,9 @@ def add_borders(arr: np.ndarray) -> np.ndarray:
     y_axis_numbers = np.pad(y_axis_numbers,
                             (
                                 (0, 0),
-                                (x_axis_numbers.shape[1], 0),
+                                (x_axis_numbers.shape[1], 0),   # type: ignore
                             ),
-                            'constant',
+                            'constant',                         # type: ignore
                             constant_values=(' '))
 
     arr = np.concatenate([y_axis_numbers, arr], axis=0)
@@ -55,7 +55,7 @@ def array_to_string(arr: np.ndarray) -> str:
     return out
 
 
-def render(renderables: list[Sprite], size=(25, 20)) -> None:
+def render(renderables: dict[Transform, Sprite], size=(25, 20)) -> str:     # type: ignore # noqa
     out = np.zeros(size, np.str_)
     for x in range(size[0]):
         col = np.zeros(size[1], np.str_)

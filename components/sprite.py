@@ -1,6 +1,6 @@
 import numpy as np
-import game
 from .component_base import Component
+
 
 class Sprite(Component):
     def __init__(self) -> None:

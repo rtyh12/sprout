@@ -1,14 +1,17 @@
 import discord
 import os
 from dotenv import load_dotenv
-from systems.render import render
+# from systems.render import render
 from game import Game
 
 load_dotenv()
 
 TOKEN = os.getenv('TOKEN')
-BOT_CLIENT_ID = int(os.getenv('BOT_CLIENT_ID'))
-MOCK = bool(os.getenv('MOCK'))      # comment/comment out MOCK; value doesn't matter
+client_id = os.getenv('BOT_CLIENT_ID')
+if client_id is not None:
+    BOT_CLIENT_ID = int(client_id)
+# Value of MOCK doesn't matter; control by commenting it out
+MOCK = bool(os.getenv('MOCK'))
 if MOCK:
     print("Mock mode is on")
 
@@ -17,9 +20,9 @@ class Sprout(discord.Client):
     def __init__(self):
         super().__init__()
         self.game = Game()
-        self.game.render()
         self.game.update()
-        
+        print(self.game.render())
+
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
 
@@ -29,10 +32,13 @@ class Sprout(discord.Client):
         print(f'Message from {message.author}: {message.content}')
 
         if not MOCK:
-            message = await self.get_channel(message.channel.id).send(render())
+            channel = self.get_channel(message.channel.id)
+            if channel is not None:
+                message = await channel.send('render()')
             await message.add_reaction(emoji="🌱")
         else:
-            print(render())
+            # print(render())
+            pass
 
     async def on_raw_reaction_add(self, payload):
         print(payload.emoji)

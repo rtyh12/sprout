@@ -33,8 +33,11 @@ class Game:
     def add_component(self, hash: str, component: Component) -> None:
         self.game_objects[hash].append(component)
 
+    def get_component(self, hash: str, type_: Type[Component]) -> Component:
+        pass
+
     def transform_and_components_of_type(self, type_: Type[Component]) \
-            -> dict[Transform: list[Component]]:
+            -> dict[Transform, list[Component]]:
         return {
             # find first Transform
             next(obj for obj in components if isinstance(obj, Transform)):
@@ -49,18 +52,18 @@ class Game:
             [component for component in self.game_objects.values()]
         ]
 
-    def update(self):
+    def update(self) -> None:
         updateables = self.transform_and_components_of_type(Updateable)
         for transform, us in updateables.items():
             for updateable in us:
                 updateable.update(transform)
 
-    def render(self):
+    def render(self) -> str:
         renderables = self.transform_and_components_of_type(Sprite)
         self.graphics = render(renderables)
-        print(self.graphics)
+        return self.graphics
 
-    def player_join(self):
+    def player_join(self) -> None:
         player = Player()
         player.id = 0
         player.inventory = {'seed': 1}
