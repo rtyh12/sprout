@@ -1,9 +1,11 @@
 import numpy as np
+import numpy.typing as npt
 from .component_base import Component
 
 
 class Sprite(Component):
     center: tuple[int, int]
+    arr: npt.NDArray[np.string_]
     
     def __init__(self,
                  arr: np.ndarray = np.array([
@@ -11,8 +13,10 @@ class Sprite(Component):
                      ['0', 'x', '0'],
                      ['0', '0', '0'],
                  ])) -> None:
-        self.arr = arr
+        if arr.dtype != np.string_:
+            arr = arr.astype(np.string_)
 
+        self.arr = arr
         self.z_index = 0
         self.center = (1, 1)
 

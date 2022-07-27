@@ -22,16 +22,28 @@ class Sprout(discord.Client):
         super().__init__()
         self.game = Game()
 
+        bg = self.game.add_game_object(Transform((0, 0)))
+        bg_sprite = Sprite(np.zeros((100, 100)))
+        bg_sprite.arr[:] = ' '
+        bg_sprite.arr[:, [5, 10]] = '-'
+        bg_sprite.z_index = -100
+        self.game.add_component(bg, bg_sprite)
+
         go_hash = self.game.add_game_object(Transform((5, 5)))
         sprite1 = Sprite(np.zeros((101, 3)) + 4)
         sprite1.center = (12, 0)
         sprite1.z_index = 3
-        sprite2 = Sprite(np.zeros((5, 5)))
+        sprite2 = Sprite(np.zeros((5, 5)) + 8)
         sprite2.z_index = 4
         self.game.add_component(go_hash, sprite1)
         self.game.add_component(go_hash, sprite2)
         # self.game.add_component(go_hash, Updateable())
-        self.game.add_component(go_hash, PlantScript())
+
+        plant = self.game.add_game_object(Transform((10, 1)))
+        plant_sprite = Sprite(np.array([['x']]))
+        plant_sprite.z_index = 10
+        self.game.add_component(plant, plant_sprite)
+        self.game.add_component(plant, PlantScript())
 
         self.game.update()
         self.game.update()

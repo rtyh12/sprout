@@ -92,6 +92,9 @@ def render(renderables: dict[Transform, Sprite], size=(25, 20)) -> str:     # ty
             arr_to_render = arr_to_render[:, :-(top - size[1])]
             top = size[1]
 
+        # Empty values don't render properly (bc they have zero width)
+        # arr_to_render = np.char.replace(arr_to_render, b'', b' ')
+
         # Render sprite
         out[left:right, bottom:top] = arr_to_render
 
