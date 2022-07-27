@@ -59,7 +59,7 @@ def render(renderables: dict[Transform, Sprite], size=(25, 20)) -> str:     # ty
     out = np.zeros(size, np.str_)
     for x in range(size[0]):
         col = np.zeros(size[1], np.str_)
-        col = '⋅'
+        col = ' '
         out[x, :] = col
 
     to_render = []
