@@ -1,7 +1,8 @@
 import numpy as np
 import game
+from .component_base import Component
 
-class Sprite:
+class Sprite(Component):
     def __init__(self) -> None:
         self.arr = np.array([
             ['a', 'b', 'c'],

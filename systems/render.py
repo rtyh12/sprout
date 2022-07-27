@@ -1,5 +1,4 @@
 from __future__ import annotations
-from operator import le
 import numpy as np
 
 X_AXIS_LABELS = (
@@ -60,7 +59,6 @@ def render(renderables: list[Sprite], size=(25, 20)) -> None:
     out = np.zeros(size, np.str_)
     for x in range(size[0]):
         col = np.zeros(size[1], np.str_)
-        plant_height = 5
         col = '⋅'
         out[x, :] = col
 

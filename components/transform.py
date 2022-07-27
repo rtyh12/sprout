@@ -3,7 +3,7 @@ class Transform:
         self.pos = pos
 
     def __repr__(self) -> str:
-        return str(self.pos)
+        return f"Transform {self.pos}"
 
     def __str__(self) -> str:
         return self.__repr__()

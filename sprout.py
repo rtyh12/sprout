@@ -18,6 +18,7 @@ class Sprout(discord.Client):
         super().__init__()
         self.game = Game()
         self.game.render()
+        self.game.update()
         
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
