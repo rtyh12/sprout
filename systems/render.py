@@ -1,3 +1,5 @@
+from __future__ import annotations
+from operator import le
 import numpy as np
 
 X_AXIS_LABELS = (
@@ -42,7 +44,7 @@ def add_borders(arr: np.ndarray) -> np.ndarray:
 
 
 def array_to_string(arr: np.ndarray) -> str:
-    out = '```'
+    out = '```\n'
 
     for y in reversed(range(arr.shape[1])):
         for x in range(arr.shape[0]):
@@ -54,13 +56,39 @@ def array_to_string(arr: np.ndarray) -> str:
     return out
 
 
-def render() -> None:
-    size = (100, 15)
+def render(renderables: list[Sprite], size=(25, 20)) -> None:
     out = np.zeros(size, np.str_)
     for x in range(size[0]):
         col = np.zeros(size[1], np.str_)
         plant_height = 5
-        col[:plant_height] = '|'
-        col[plant_height:] = '-'
+        col = '⋅'
         out[x, :] = col
+
+    for transform, sprites in renderables.items():
+        for sprite in sprites:
+            # Calculate bounding box in world coords
+            left = transform.pos[0] - sprite.center[0]
+            bottom = transform.pos[1] - sprite.center[1]
+            right = left + sprite.shape[0]
+            top = bottom + sprite.shape[1]
+
+            # Chop off parts of bbox outside of the viewport
+            arr_to_render = sprite.arr.copy()
+
+            if left < 0:
+                arr_to_render = arr_to_render[-left:, :]
+                left = 0
+            if bottom < 0:
+                arr_to_render = arr_to_render[:, -bottom:]
+                bottom = 0
+            if right >= size[0]:
+                arr_to_render = arr_to_render[:-(right - size[0]), :]
+                right = size[0]
+            if top >= size[1]:
+                arr_to_render = arr_to_render[:, :-(top - size[1])]
+                top = size[1]
+
+            # Render sprite
+            out[left:right, bottom:top] = arr_to_render
+
     return array_to_string(add_borders(out))
