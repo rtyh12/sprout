@@ -2,12 +2,12 @@ from typing import Type
 import random
 import string
 
-from components.component_base import Component
-from components.transform import Transform
-from components.updateable import Updateable
-from components.sprite import Sprite
+from .components.component_base import Component
+from .components.transform import Transform
+from .components.updateable import Updateable
+from .components.sprite import Sprite
 
-from systems.render import render
+from .systems.render import render
 
 
 class Player:

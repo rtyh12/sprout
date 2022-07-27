@@ -1,8 +1,9 @@
 import discord
 import os
 from dotenv import load_dotenv
-# from systems.render import render
-from game import Game
+
+from engine.components.sprite import Sprite
+from engine.game import Game
 
 load_dotenv()
 
@@ -10,7 +11,6 @@ TOKEN = os.getenv('TOKEN')
 client_id = os.getenv('BOT_CLIENT_ID')
 if client_id is not None:
     BOT_CLIENT_ID = int(client_id)
-# Value of MOCK doesn't matter; control by commenting it out
 MOCK = bool(os.getenv('MOCK'))
 if MOCK:
     print("Mock mode is on")
@@ -20,6 +20,7 @@ class Sprout(discord.Client):
     def __init__(self):
         super().__init__()
         self.game = Game()
+
         self.game.update()
         print(self.game.render())
 
