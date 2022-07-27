@@ -1,11 +1,11 @@
 from .component_base import Component
-from .transform import Transform
 
 
 class Updateable(Component):
-    def __init__(self, transform: Transform) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self.transform = transform
 
     def update(self):
-        print('updating')
+        if self.go_hash is None:
+            raise ValueError("go_hash is None (is this component attached to a game object?)")
+        print(f'update() called on generic Updateable of {self.go_hash}')

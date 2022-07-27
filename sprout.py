@@ -3,7 +3,10 @@ import os
 from dotenv import load_dotenv
 
 from engine.components.sprite import Sprite
+from engine.components.transform import Transform
+from engine.components.updateable import Updateable
 from engine.game import Game
+from scripts.plant_script import PlantScript
 
 load_dotenv()
 
@@ -20,6 +23,11 @@ class Sprout(discord.Client):
     def __init__(self):
         super().__init__()
         self.game = Game()
+
+        go_hash = self.game.add_game_object(Transform((5, 5)))
+        self.game.add_component(go_hash, Sprite())
+        self.game.add_component(go_hash, Updateable())
+        self.game.add_component(go_hash, PlantScript())
 
         self.game.update()
         print(self.game.render())
