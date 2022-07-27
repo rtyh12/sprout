@@ -62,31 +62,37 @@ def render(renderables: dict[Transform, Sprite], size=(25, 20)) -> str:     # ty
         col = '⋅'
         out[x, :] = col
 
+    to_render = []
     for transform, sprites in renderables.items():
         for sprite in sprites:
-            # Calculate bounding box in world coords
-            left = transform.pos[0] - sprite.center[0]
-            bottom = transform.pos[1] - sprite.center[1]
-            right = left + sprite.shape[0]
-            top = bottom + sprite.shape[1]
+            to_render.append((transform, sprite))
 
-            # Chop off parts of bbox outside of the viewport
-            arr_to_render = sprite.arr.copy()
+    to_render.sort(key=lambda t: t[1].z_index)
 
-            if left < 0:
-                arr_to_render = arr_to_render[-left:, :]
-                left = 0
-            if bottom < 0:
-                arr_to_render = arr_to_render[:, -bottom:]
-                bottom = 0
-            if right >= size[0]:
-                arr_to_render = arr_to_render[:-(right - size[0]), :]
-                right = size[0]
-            if top >= size[1]:
-                arr_to_render = arr_to_render[:, :-(top - size[1])]
-                top = size[1]
+    for transform, sprite in to_render:
+        # Calculate bounding box in world coords
+        left = transform.pos[0] - sprite.center[0]
+        bottom = transform.pos[1] - sprite.center[1]
+        right = left + sprite.shape[0]
+        top = bottom + sprite.shape[1]
 
-            # Render sprite
-            out[left:right, bottom:top] = arr_to_render
+        # Chop off parts of bbox outside of the viewport
+        arr_to_render = sprite.arr.copy()
+
+        if left < 0:
+            arr_to_render = arr_to_render[-left:, :]
+            left = 0
+        if bottom < 0:
+            arr_to_render = arr_to_render[:, -bottom:]
+            bottom = 0
+        if right >= size[0]:
+            arr_to_render = arr_to_render[:-(right - size[0]), :]
+            right = size[0]
+        if top >= size[1]:
+            arr_to_render = arr_to_render[:, :-(top - size[1])]
+            top = size[1]
+
+        # Render sprite
+        out[left:right, bottom:top] = arr_to_render
 
     return array_to_string(add_borders(out))

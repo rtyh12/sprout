@@ -1,6 +1,7 @@
 import discord
 import os
 from dotenv import load_dotenv
+import numpy as np
 
 from engine.components.sprite import Sprite
 from engine.components.transform import Transform
@@ -25,10 +26,18 @@ class Sprout(discord.Client):
         self.game = Game()
 
         go_hash = self.game.add_game_object(Transform((5, 5)))
-        self.game.add_component(go_hash, Sprite())
-        self.game.add_component(go_hash, Updateable())
+        sprite1 = Sprite(np.zeros((101, 3)) + 4)
+        sprite1.center = (12, 0)
+        sprite1.z_index = 3
+        sprite2 = Sprite(np.zeros((5, 5)))
+        sprite2.z_index = 4
+        self.game.add_component(go_hash, sprite1)
+        self.game.add_component(go_hash, sprite2)
+        # self.game.add_component(go_hash, Updateable())
         self.game.add_component(go_hash, PlantScript())
 
+        self.game.update()
+        self.game.update()
         self.game.update()
         print(self.game.render())
 

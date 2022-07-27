@@ -33,6 +33,8 @@ class Game:
         c = component
         c.go_hash = hash
         c.game = self
+        if (isinstance(c, Updateable)):
+            c.start()
         self.game_objects[hash].append(c)
 
     def get_components(self, hash: str, type_: Type[Component]) -> list[Component]:
